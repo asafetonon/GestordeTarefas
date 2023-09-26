@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App de Gestor de Tarefas</title>
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css" integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+    <!-- Fontes de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <!-- Folha de estilo (main.css) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center mt-4 titulo">App de Gestão de Tarefas</h1>
+        <div class="row">
+            <div class="col-md-4 offset-md-4 my-auto"> <!-- Este div vai ocupar 4 colunas do espaço (centrado) -->
+                <div class="card"> <!-- Criação do objeto card -->
+                    <div class="card-header">
+                        <form action="/criar-tarefa" method="post"> <!-- Separamos o input do botão colocando o input neste for-group para que os elementos não estejam colados e haja separação entre eles -->
+                            <div class="form-group">
+                                <input type="text" name="conteudo_tarefa" placeholder="Tarefa" class="form-control" autofocus>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block"> <!-- btn-block faz com que o botão ocupe toda a largura -->
+                                Guardar
+                            </button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <!-- As etiquetas <ul> e <li> servem para criar listas em HTML -->
+                        <ul class="list-group">
+                            <!-- Graças ao Jinja pode-se introduzir código Python no nosso HTML e Python encarrega-se de o executar e interpretar -->
+                            {% for tarefa in lista_de_tarefas %}
+                            <li class="list-group-item">
+                                <span class="{% if tarefa.feita==true %} tarefa_feita {% endif %}"> {{tarefa.conteudo}} </span> <!-- conteúdo é a variavel da classe Tarefa que armazena o texto da tarefa -->
+                                <a href="/tarefa-feita/{{tarefa.id}}" style="text-decoration:none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check2-square" viewBox="0 0 16 16">
+                                        <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                                        <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                                    </svg>
+                                </a>
+                                <a href="/eliminar-tarefa/{{tarefa.id}}" style="text-decoration:none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                    </svg>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
